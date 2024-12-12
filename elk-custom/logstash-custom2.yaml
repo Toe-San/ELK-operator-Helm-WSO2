@@ -1,0 +1,67 @@
+apiVersion: logstash.k8s.elastic.co/v1alpha1  
+kind: Logstash  
+metadata:  
+  name: logstash  
+spec:  
+  count: 1  
+  version: 8.15.0  
+  elasticsearchRefs:  
+    - clusterName: eck  
+      name: elasticsearch  
+  pipelines:  
+    - pipeline.id: main  
+      config.string: |  
+        input {  
+          beats {  
+            port => 5044  
+          }  
+        }  
+        filter {  
+          grok {  
+            match => { "message" => "%{HTTPD_COMMONLOG}"}  
+          }  
+          geoip {  
+            source => "[source][address]"  
+            target => "[source]"  
+          }  
+        }  
+        output {  
+          if [apimMetrics] == "apim:response" {  
+            elasticsearch {  
+              index => "apim_event_response"  
+              hosts => ["https://elasticsearch-es-http:9200"]  
+              api_key => "cAYytZMB8mR3197-JkH1:HHKJ1ykyQ9KupPL_1eBTZA"
+              ssl => true
+              ssl_certificate_verification => false
+                
+            }  
+          } else if [apimMetrics] == "apim:faulty" {  
+            elasticsearch {  
+              index => "apim_event_faulty"  
+              hosts => ["https://elasticsearch-es-http:9200"]  
+              api_key => "cAYytZMB8mR3197-JkH1:HHKJ1ykyQ9KupPL_1eBTZA"
+              ssl => true
+              ssl_certificate_verification => false
+              
+            }  
+          } else {  
+            elasticsearch {  
+              index => "log"  
+              hosts => ["https://elasticsearch-es-http:9200"]  
+              api_key => "cAYytZMB8mR3197-JkH1:HHKJ1ykyQ9KupPL_1eBTZA"
+              ssl => true
+              ssl_certificate_verification => false
+              
+            }  
+          }  
+        }  
+  services:  
+    - name: beats  
+      service:  
+        spec:  
+          type: ClusterIP  
+          ports:  
+            - port: 5044  
+              name: "filebeat"  
+              protocol: TCP  
+              targetPort: 5044  
