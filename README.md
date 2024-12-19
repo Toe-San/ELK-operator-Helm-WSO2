@@ -1,4 +1,4 @@
-## WSO2 API Manager deploy with Helm Chart | Deploy ECK in Kubernetes cluster | Cert-Manager with Let's Encrypt Deploy on K8S
+## * WSO2 API Manager deploy with Helm Chart  <br> * Deploy ECK in Kubernetes cluster  <br> * Cert-Manager with Let's Encrypt Deploy on K8S
 
 ## 1. Helm Chart for deployment of WSO2 API Manager
 
@@ -134,7 +134,8 @@ For general questions, please see the Elastic [forums](https://discuss.elastic.c
 
 ## 3. Cert-Manager
 
-![image](https://github.com/user-attachments/assets/84a396fd-5822-4578-ac07-85be58096281)
+![image](https://github.com/user-attachments/assets/546b195e-b198-44b0-9b0c-a75074d25eb2)
+
 
 ![image](https://github.com/user-attachments/assets/eb8b4de1-3a09-4791-b22b-e1c480e25aff)
 
