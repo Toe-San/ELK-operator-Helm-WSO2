@@ -32,7 +32,7 @@ spec:
             elasticsearch {  
               index => "apim_event_response"  
               hosts => ["https://elasticsearch-es-http:9200"]  
-              api_key => "vBJh2ZMBRl-dLVhYqULA:w8Nj6dEcRBaOD2cQur1xqw"
+              api_key => "-dLVhYqULA"
               ssl => true
               ssl_certificate_verification => false
                 
@@ -41,7 +41,7 @@ spec:
             elasticsearch {  
               index => "apim_event_faulty"  
               hosts => ["https://elasticsearch-es-http:9200"]  
-              api_key => "vBJh2ZMBRl-dLVhYqULA:w8Nj6dEcRBaOD2cQur1xqw"
+              api_key => "-dLVhYqULA"
               ssl => true
               ssl_certificate_verification => false
               
@@ -50,7 +50,7 @@ spec:
             elasticsearch {  
               index => "log"  
               hosts => ["https://elasticsearch-es-http:9200"]  
-              api_key => "vBJh2ZMBRl-dLVhYqULA:w8Nj6dEcRBaOD2cQur1xqw"
+              api_key => "-dLVhYqULA"
               ssl => true
               ssl_certificate_verification => false
               
