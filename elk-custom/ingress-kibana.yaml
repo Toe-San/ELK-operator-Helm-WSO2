@@ -13,10 +13,10 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - kibana.tsandev.org
+    - kibana.toesan.com
     secretName: wildcard-ts-tls
   rules:
-  - host: kibana.tsandev.org
+  - host: kibana.toesan.com
     http:
       paths:
       - path: /
