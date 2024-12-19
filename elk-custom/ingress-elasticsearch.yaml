@@ -13,10 +13,10 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - elastic.tsandev.org
+    - elastic.toesan.com
     secretName: wildcard-ts-tls
   rules:
-  - host: elastic.tsandev.org
+  - host: elastic.toesan.com
     http:
       paths:
       - path: /
