@@ -1,4 +1,4 @@
-# Helm Chart for deployment of WSO2 API Manager
+## Helm Chart for deployment of WSO2 API Manager
 
 Resources for building a Helm chart for deployment of [Single Node API Manager](https://apim.docs.wso2.com/en/4.0.0/install-and-setup/setup/single-node/all-in-one-deployment-overview/#single-node-deployment).
 
