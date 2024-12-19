@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: elasticsearch-es-http-ingress
+  name: kibana-kb-http-ingress
   namespace: elk
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-wildcard-issuer
@@ -13,16 +13,16 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - elastic.tsandev.org
+    - kibana.tsandev.org
     secretName: wildcard-ts-tls
   rules:
-  - host: elastic.tsandev.org
+  - host: kibana.tsandev.org
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: elasticsearch-es-http
+            name: kibana-kb-http
             port:
-              number: 9200
+              number: 5601

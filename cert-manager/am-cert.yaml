@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: am-crt
+spec:
+  secretName: am-tls
+  dnsNames:
+  - am.tsandev.org
+  issuerRef:
+    name: letsencrypt-issuer
+    kind: ClusterIssuer

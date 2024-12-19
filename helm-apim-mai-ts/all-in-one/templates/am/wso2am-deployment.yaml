@@ -57,6 +57,21 @@ spec:
       securityContext:
         seccompProfile:
           type: RuntimeDefault
+
+      initContainers:
+        - name: volume-permission
+          image: busybox
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              chown -R {{ .Values.kubernetes.securityContext.runAsUser }}:{{ .Values.kubernetes.securityContext.runAsGroup }} /home/wso2carbon/wso2am-4.4.0/repository/logs/;
+              chmod -R 755 /home/wso2carbon/wso2am-4.4.0/
+          volumeMounts:
+            - name: wso2am-log
+              mountPath: /home/wso2carbon/wso2am-4.4.0/repository/logs/
+          securityContext:
+            runAsUser: 0
+            
       containers:
         - name: wso2am
           image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}

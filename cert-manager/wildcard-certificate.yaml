@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-tsandev-org
+  namespace: elk
+spec:
+  secretName: wildcard-ts-tls 
+  issuerRef:
+    name: letsencrypt-wildcard-issuer
+    kind: ClusterIssuer
+  commonName: "*.tsandev.org"
+  dnsNames:
+  - "*.tsandev.org"
+  - "tsandev.org"

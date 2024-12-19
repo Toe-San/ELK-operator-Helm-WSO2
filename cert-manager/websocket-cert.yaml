@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: websocket-crt
+spec:
+  secretName: websocket-tls
+  dnsNames:
+  - websocket.tsandev.org
+  issuerRef:
+    name: letsencrypt-issuer
+    kind: ClusterIssuer

@@ -9,124 +9,6 @@
 #
 # --------------------------------------------------------------------------------------
 
-aws:
-  # -- If AWS is used as the cloud provider
-  enabled: false
-  efs:
-    # -- EFS capacity
-    capacity: ""
-    # -- EFS directory permissions
-    directoryPerms: "0777"
-    # -- EFS file system ID for mounting the persistent volume
-    fileSystemId: ""
-    # -- EFS Access Points for static provisioning
-    accessPoints:
-      carbonDb: ""
-      solr: ""
-  # -- AWS region
-  region: ""
-  secretsManager:
-    # -- AWS Secrets Manager secret provider class name
-    secretProviderClass: "wso2am-am-secret-provider-class"
-    secretIdentifiers:
-      # -- Internal keystore password identifier in secrets manager
-      internalKeystorePassword:
-        # -- AWS Secrets Manager secret name
-        secretName: ""
-        # -- AWS Secrets Manager secret key
-        secretKey: ""
-  # Name of Kubernetes service account
-  serviceAccountName: ""
-
-azure:
-  # -- If Azure is used as the cloud provider
-  enabled: false
-  keyVault:
-    # -- Azure Key vault used for credential management
-    name: ""
-    # -- Azure Key vault secret provider class name
-    secretProviderClass: "wso2am-secret-provider-class"
-    secretIdentifiers:
-      # -- Internal keystore password identifier in keyvault
-      internalKeystorePassword: ""
-      # -- Internal keystore key password identifier in keyvault
-      internalKeystoreKeyPassword: ""
-    activeDirectory:
-      # -- Service Principal created for transacting with the target Azure Key Vault
-      # For advanced details refer to official documentation (https://github.com/Azure/secrets-store-csi-driver-provider-azure/blob/master/docs/service-principal-mode.md)
-      servicePrincipal:
-        # -- Application ID of the service principal used in secret-store-csi
-        appId: ""
-        # -- Client secret name of the service principal used in secret-store-csi
-        clientSecretName: ""
-        # -- Credentials secret name of the service principal used as nodePublisherRef
-        credentialsSecretName: ""
-      # -- Azure Active Directory tenant ID of the target Key Vault
-      tenantId: ""
-    resourceManager:
-      # -- Subscription ID of the target Azure Key Vault
-      subscriptionId: ""
-      # -- Name of the Azure Resource Group to which the target Azure Key Vault belongs
-      resourceGroup: ""
-  serviceAccount: "wso2am-all-in-one-svc-account"
-  persistence:
-    # Needed for persisting indexing related data
-    # -- Persistent volume capacity
-    capacity: ""
-    # -- Persistent volume storage class
-    storageClass: ""
-    # -- Azure file secret name
-    secretName: ""
-    # -- Azure fileshare name
-    fileShare: ""
-
-# Google Cloud Platform (GCP) integration status
-gcp:
-  # -- If GCP is used as the cloud provider
-  enabled: false
-  # -- File Store configuration parameters
-  fs:
-    # -- Storage capacity of the file system (in GB or other appropriate units)
-    capacity: ""
-    # -- FileStore configuration for specific services
-    fileshares:
-      # -- FileShare configs for CarbonDB persistent storage
-      carbonDB:
-        # -- FileStore of the CarbonDB persistent storage
-        fileStoreName: ""
-        # -- FileShare of the CarbonDB persistent storage
-        fileShareName: ""
-        # -- IP of the CarbonDB persistent storage
-        ip: ""
-      # -- FileShare configs for Solr persistent storage
-      solr:
-        # -- FileStore of the Solr persistent storage
-        fileStoreName: ""
-        # -- FileShare of the Solr persistent storage
-        fileShareName: ""
-        # -- IP of the Solr persistent storage
-        ip: ""
-    # -- Tier of the FileStore
-    tier: ""
-    # -- Network of the FileStore
-    network: ""
-
-    # -- Region of the FileStore
-    location: ""
-
-  # -- Secrets Manager configuration parameters
-  secretsManager:
-    # -- Project ID
-    projectId: ""
-    # -- Secret provider class
-    secretProviderClass: ""
-    secret:
-      # -- Name of the secret
-      secretName: ""
-      # -- Version of the secret 
-      secretVersion: ""
-  # -- Service Account with access to read secrets
-  serviceAccountName: ""
 
 kubernetes:
   # -- Ingress class to be used for the ingress resource
@@ -144,7 +26,7 @@ kubernetes:
     management:
       enabled: true
       # Hostname for API Manager Carbon Management Console, Publisher, DevPortal and Admin Portal
-      hostname: "am.wso2.com"
+      hostname: "am.tsandev.org"
       # Annotations for the API Manager Publisher-DevPortal services Ingress
       annotations:
         nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
@@ -154,7 +36,7 @@ kubernetes:
     gateway:
       enabled: true
       # -- Ingress hostname for Gateway pass-through
-      hostname: "gw.wso2.com"
+      hostname: "gw.tsandev.org"
       # -- Ingress annotations for Gateway pass-through
       annotations:
         nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
@@ -163,14 +45,14 @@ kubernetes:
     websocket:
       enabled: true
       # -- Ingress hostname for Websocket
-      hostname: "websocket.wso2.com"
+      hostname: "websocket.tsandev.org"
       # -- Ingress annotations for Websocket
       annotations:
         #todo: add websocket specific annotations
     websub:
       enabled: true
       # -- Ingress hostname for Websub
-      hostname: "websub.wso2.com"
+      hostname: "websub.tsandev.org"
       # -- Ingress annotations for Websub
       annotations:
   securityContext:
@@ -202,9 +84,9 @@ wso2:
     # Logging related configurations
     log4j2:
       # -- Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE
-      loggers: ""
+      loggers: "reporter"
       # -- Appenders
-      appenders: ""
+      appenders: "APIM_METRICS_APPENDER"
     # -- Startup arguments for APIM
     startupArgs: ""
     # -- Port Offset for APIM deployment
@@ -227,18 +109,18 @@ wso2:
       adminPassword: "admin"
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: ""
+        type: "h2"
         jdbc:
           # -- JDBC driver class name
-          driver: ""
+          driver: "org.h2.Driver"
         # -- APIM APIMDB configurations. This is required for gateway only in a multi-tenancy scenario
         apim_db:
           # -- APIM APIMDB URL
-          url: ""
+          url: "jdbc:h2:./repository/database/WSO2AM_DB;DB_CLOSE_ON_EXIT=FALSE"
           # -- APIM APIMDB username
-          username: ""
+          username: "wso2carbon"
           # -- APIM APIMDB password
-          password: ""
+          password: "wso2carbon"
           # -- APIM database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: false
@@ -250,11 +132,11 @@ wso2:
             minIdle: 5
         shared_db:
           # -- APIM SharedDB URL
-          url: ""
+          url: "jdbc:h2:./repository/database/WSO2SHARED_DB;DB_CLOSE_ON_EXIT=FALSE"
           # -- APIM SharedDB username
-          username: ""
+          username: "wso2carbon"
           # -- APIM SharedDB password
-          password: ""
+          password: "wso2carbon"
           # -- APIM database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: false
@@ -283,9 +165,9 @@ wso2:
             # -- Primary keystore alias
             alias: "wso2carbon"
             # -- Primary keystore password
-            password: ""
+            password: "wso2carbon"
             # -- Primary keystore key password
-            keyPassword: ""
+            keyPassword: "wso2carbon"
           tls:
             # -- TLS keystore enabled
             enabled: true
@@ -305,14 +187,14 @@ wso2:
             # -- Internal keystore alias
             alias: "wso2carbon"
             # -- Internal keystore password
-            password: ""
+            password: "wso2carbon"
             # -- Internal keystore key password
-            keyPassword: ""
+            keyPassword: "wso2carbon"
         truststore:
           # -- Truststore name
           name: "client-truststore.jks"
           # -- Truststore password
-          password: ""
+          password: "wso2carbon"
 
       gateway:
         # -- APIM Gateway environments
@@ -324,11 +206,11 @@ wso2:
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
-          serviceName: "wso2am-gateway-service"
+          serviceName: "gw.tsandev.org"
           servicePort: 9443
-          wsHostname: "websocket.wso2.com"
-          httpHostname: "gw.wso2.com"
-          websubHostname: "websub.wso2.com"
+          wsHostname: "websocket.tsandev.org"
+          httpHostname: "gw.tsandev.org"
+          websubHostname: "websub.tsandev.org"
 
       syncRuntimeArtifacts:
         gateway:
@@ -438,7 +320,7 @@ wso2:
         # This should be used only if there are additional document types to be supported.
         supportedDocumentTypes: ""
         enablePortalConfigurationOnlyMode: false
-        internalKeyIssuer: ""
+        internalKeyIssuer: "http://am.wso2.com:443/token"
 
       # APIM CORS configurations
       cors:
@@ -542,7 +424,7 @@ wso2:
             notificationEndpoint: "https://localhost:${mgt.transport.https.port}/internal/data/v1/notify"
 
       keyManager:
-        enableLightweightAPIKeyGeneration: true
+        enableLightweightAPIKeyGeneration: false
         allowSubscriptionValidationDisabling: true
 
       transactionCounter:
@@ -555,11 +437,11 @@ wso2:
       # -- Registry containing the image
       registry: "docker.io"
       # -- Repository name consisting the image
-      repository: "wso2/wso2am"
+      repository: "wso2/wso2am:4.4.0"
       # -- Docker image digest
       digest: "sha256:40fc82de795ad4e07f5e1791ab05a65106f18f4ef4451617c94ecfe93041b7ab"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
-      imagePullPolicy: Always
+      imagePullPolicy: IfNotPresent
 
     resources:
       # These are the resource recommendations for running WSO2 API Management product profiles with profile optimization
@@ -585,7 +467,7 @@ wso2:
     # Indicates whether the container starting
     startupProbe:
       # -- Number of seconds after the container has started before startup probes are initiated
-      initialDelaySeconds: 60
+      initialDelaySeconds: 600
       # -- How often (in seconds) to perform the probe
       periodSeconds: 10
       # -- Minimum consecutive successes for the probe to be considered successful after having failed
@@ -593,7 +475,7 @@ wso2:
     # Indicates whether the container is running
     livenessProbe:
       # -- Number of seconds after the container has started before liveness probes are initiated
-      initialDelaySeconds: 300
+      initialDelaySeconds: 60
       # -- How often (in seconds) to perform the probe
       periodSeconds: 10
       # -- Minimum consecutive successes for the probe to be considered successful after having failed
@@ -616,14 +498,11 @@ wso2:
 
     # -- Node selector to deploy pod in selected node. Add label to the node and specify the label here.
     nodeSelector:
-      kubernetes.io/hostname: "minikube"  
-
-    ############# Mount Configure #############
+      dev-node: "dev-node"
     persistence:
       logs:
         enabled: true
         claimName: "wso2am-logs-pvc"
-    ############# Mount Configure #############
       # -- Persistent runtime artifacts for Apache Solr-based indexing
       solrIndexing:
         # -- Indicates if persistence of the runtime artifacts for Apache Solr-based indexing is enabled
