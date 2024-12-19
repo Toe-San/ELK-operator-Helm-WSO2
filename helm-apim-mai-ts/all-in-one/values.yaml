@@ -26,7 +26,7 @@ kubernetes:
     management:
       enabled: true
       # Hostname for API Manager Carbon Management Console, Publisher, DevPortal and Admin Portal
-      hostname: "am.tsandev.org"
+      hostname: "am.toesan.com"
       # Annotations for the API Manager Publisher-DevPortal services Ingress
       annotations:
         nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
@@ -36,7 +36,7 @@ kubernetes:
     gateway:
       enabled: true
       # -- Ingress hostname for Gateway pass-through
-      hostname: "gw.tsandev.org"
+      hostname: "gw.toesan.com"
       # -- Ingress annotations for Gateway pass-through
       annotations:
         nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
@@ -45,14 +45,14 @@ kubernetes:
     websocket:
       enabled: true
       # -- Ingress hostname for Websocket
-      hostname: "websocket.tsandev.org"
+      hostname: "websocket.toesan.com"
       # -- Ingress annotations for Websocket
       annotations:
         #todo: add websocket specific annotations
     websub:
       enabled: true
       # -- Ingress hostname for Websub
-      hostname: "websub.tsandev.org"
+      hostname: "websub.toesan.com"
       # -- Ingress annotations for Websub
       annotations:
   securityContext:
@@ -118,9 +118,9 @@ wso2:
           # -- APIM APIMDB URL
           url: "jdbc:h2:./repository/database/WSO2AM_DB;DB_CLOSE_ON_EXIT=FALSE"
           # -- APIM APIMDB username
-          username: "wso2carbon"
+          username: "username" #<=== Give your own username
           # -- APIM APIMDB password
-          password: "wso2carbon"
+          password: "password" #<=== Give your own password
           # -- APIM database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: false
@@ -206,11 +206,11 @@ wso2:
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
-          serviceName: "gw.tsandev.org"
+          serviceName: "gw.toesan.com"
           servicePort: 9443
-          wsHostname: "websocket.tsandev.org"
-          httpHostname: "gw.tsandev.org"
-          websubHostname: "websub.tsandev.org"
+          wsHostname: "websocket.toesan.com"
+          httpHostname: "gw.toesan.com"
+          websubHostname: "websub.toesan.com"
 
       syncRuntimeArtifacts:
         gateway:
@@ -498,11 +498,12 @@ wso2:
 
     # -- Node selector to deploy pod in selected node. Add label to the node and specify the label here.
     nodeSelector:
-      dev-node: "dev-node"
+      dev-node: "dev-node"  #<==== your node
+      
     persistence:
       logs:
         enabled: true
-        claimName: "wso2am-logs-pvc"
+        claimName: "wso2am-logs-pvc"     #<=== For Log Claim Volume
       # -- Persistent runtime artifacts for Apache Solr-based indexing
       solrIndexing:
         # -- Indicates if persistence of the runtime artifacts for Apache Solr-based indexing is enabled
