@@ -31,4 +31,4 @@ spec:
         storageClassName: elk-efs-sc  # References the StorageClass
         resources:
           requests:
-            storage: 10Gi
+            storage: 500Gi
