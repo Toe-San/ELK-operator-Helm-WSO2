@@ -28,7 +28,7 @@ spec:
       spec:
         accessModes:
         - ReadWriteMany
-        storageClassName: efs-sc  # References the StorageClass
+        storageClassName: elk-efs-sc  # References the StorageClass
         resources:
           requests:
             storage: 10Gi
