@@ -11,6 +11,8 @@ spec:
       node.store.allow_mmap: false
     podTemplate:
       spec:
+        nodeSelector:
+          elk-node: elk-node
         containers:
         - name: elasticsearch
           resources:
