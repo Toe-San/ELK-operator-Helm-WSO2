@@ -1,0 +1,79 @@
+apiVersion: logstash.k8s.elastic.co/v1alpha1
+kind: Logstash
+metadata:
+  name: logstash
+spec:
+  volumeClaimTemplates:
+    - metadata:
+        name: logstash-data # Do not change this name unless you set up a volume mount for the data path.
+      spec:
+        accessModes:
+          - ReadWriteMany
+        storageClassName: elk-efs-sc
+        resources:
+          requests:
+            storage: 2Gi
+  count: 1
+  version: 8.15.0
+  elasticsearchRefs:
+    - clusterName: eck
+      name: elasticsearch
+  pipelines:
+    - pipeline.id: main
+      config.string: |
+        input {
+          beats {
+            port => 5044
+          }
+        }
+        filter {
+          grok {
+            match => { "message" => "%{GREEDYDATA:UNWANTED} apimMetrics:%{GREEDYDATA:apimMetrics}, %{GREEDYDATA:UNWANTED} :%{GREEDYDATA:properties}" }
+          }
+          mutate {
+            strip => ["apimMetrics"]
+          }
+          json {
+            source => "properties"
+          }
+        }
+        output {
+          stdout {
+            codec => rubydebug
+          } 
+          if [apimMetrics] == "apim:response" {
+            elasticsearch {
+              index => "apim_event_response"
+              hosts => ["https://elasticsearch-es-http:9200"]
+              api_key => "xUwsp8W0SjuWW8e6kUwK-Q"
+              ssl => true
+              ssl_certificate_verification => false
+            }
+          } else if [apimMetrics] == "apim:faulty" {
+            elasticsearch {
+              index => "apim_event_faulty"
+              hosts => ["https://elasticsearch-es-http:9200"]
+              api_key => "xUwsp8W0SjuWW8e6kUwK-Q"
+              ssl => true
+              ssl_certificate_verification => false
+            }
+          } else {
+            elasticsearch {
+              index => "log"
+              hosts => ["https://elasticsearch-es-http:9200"]
+              api_key => "xUwsp8W0SjuWW8e6kUwK-Q"
+              ssl => true
+              ssl_certificate_verification => false
+            }
+          }
+        }
+  services:
+    - name: beats
+      service:
+        spec:
+          type: ClusterIP
+          ports:
+            - port: 5044
+              name: "filebeat"
+              protocol: TCP
+              targetPort: 5044
